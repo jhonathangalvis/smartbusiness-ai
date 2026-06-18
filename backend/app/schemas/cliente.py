@@ -8,6 +8,12 @@ class ClienteCreate(BaseModel):
     telefono: str
 
 
+class ClienteUpdate(BaseModel):
+    nombre: str
+    correo: EmailStr
+    telefono: str
+
+
 class ClienteResponse(BaseModel):
     id: int
     nombre: str
