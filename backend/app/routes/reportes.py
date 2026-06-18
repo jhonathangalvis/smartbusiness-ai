@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from app.database.session import get_db
 
@@ -8,14 +9,13 @@ from app.models.cliente import Cliente
 from app.models.detalle_venta import DetalleVenta
 from app.models.producto import Producto
 
-from sqlalchemy import func
-
-from app.models.producto import Producto
-
 router = APIRouter()
 
 
-# Reporte general de ventas
+# ==========================================
+# REPORTE GENERAL DE VENTAS
+# ==========================================
+
 @router.get("/reporte/ventas")
 def reporte_ventas(
     db: Session = Depends(get_db)
@@ -45,7 +45,10 @@ def reporte_ventas(
     return resultado
 
 
-# Reporte detallado de ventas
+# ==========================================
+# REPORTE DETALLADO DE VENTAS
+# ==========================================
+
 @router.get("/reporte/detalle-ventas")
 def reporte_detalle_ventas(
     db: Session = Depends(get_db)
@@ -85,6 +88,11 @@ def reporte_detalle_ventas(
         })
 
     return resultado
+
+
+# ==========================================
+# KPIs EJECUTIVOS
+# ==========================================
 
 @router.get("/reporte/kpis")
 def obtener_kpis(
