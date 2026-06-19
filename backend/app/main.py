@@ -19,3 +19,4 @@ def root():
     return {
         "message": "SmartBusiness AI API funcionando correctamente"
     }
+

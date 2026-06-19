@@ -7,6 +7,7 @@ from sqlalchemy import (
     Numeric,
     DateTime
 )
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
@@ -26,4 +27,9 @@ class Producto(Base):
     fecha_creacion = Column(
         DateTime,
         server_default=func.now()
+    )
+
+    detalles = relationship(
+        "DetalleVenta",
+        back_populates="producto"
     )

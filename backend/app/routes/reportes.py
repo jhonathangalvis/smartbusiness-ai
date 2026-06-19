@@ -118,3 +118,88 @@ def obtener_kpis(
         "total_ventas": total_ventas,
         "ingresos_totales": float(ingresos_totales)
     }
+
+
+
+@router.get("/reporte/top-productos")
+def top_productos(
+    db: Session = Depends(get_db)
+):
+    productos = (
+        db.query(
+            Producto.nombre.label("producto"),
+            func.sum(
+                DetalleVenta.cantidad
+            ).label("cantidad_vendida")
+        )
+        .join(
+            DetalleVenta,
+            Producto.id == DetalleVenta.producto_id
+        )
+        .group_by(
+            Producto.nombre
+        )
+        .order_by(
+            func.sum(
+                DetalleVenta.cantidad
+            ).desc()
+        )
+        .all()
+    )
+
+    resultado = []
+
+    for producto in productos:
+        resultado.append({
+            "producto": producto.producto,
+            "cantidad_vendida": int(
+                producto.cantidad_vendida
+            )
+        })
+
+    return resultado
+
+
+# ==========================================
+# TOP CLIENTES
+# ==========================================
+
+@router.get("/reporte/top-clientes")
+def top_clientes(
+    db: Session = Depends(get_db)
+):
+    clientes = (
+        db.query(
+            Cliente.nombre.label("cliente"),
+            func.sum(
+                Venta.total
+            ).label("total_compras")
+        )
+        .join(
+            Venta,
+            Cliente.id == Venta.cliente_id
+        )
+        .group_by(
+            Cliente.nombre
+        )
+        .order_by(
+            func.sum(
+                Venta.total
+            ).desc()
+        )
+        .all()
+    )
+
+    resultado = []
+
+    for cliente in clientes:
+        resultado.append({
+            "cliente": cliente.cliente,
+            "total_compras": float(
+                cliente.total_compras
+            )
+        })
+
+    return resultado
+
+

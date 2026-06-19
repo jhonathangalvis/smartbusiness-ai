@@ -5,6 +5,7 @@ from sqlalchemy import (
     ForeignKey,
     Numeric
 )
+from sqlalchemy.orm import relationship
 
 
 class DetalleVenta(Base):
@@ -34,4 +35,14 @@ class DetalleVenta(Base):
     subtotal = Column(
         Numeric(10, 2),
         nullable=False
+    )
+
+    venta = relationship(
+        "Venta",
+        back_populates="detalles"
+    )
+
+    producto = relationship(
+        "Producto",
+        back_populates="detalles"
     )

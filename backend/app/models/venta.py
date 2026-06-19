@@ -6,6 +6,7 @@ from sqlalchemy import (
     Numeric,
     DateTime
 )
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
@@ -28,4 +29,14 @@ class Venta(Base):
     total = Column(
         Numeric(10, 2),
         default=0
+    )
+
+    cliente = relationship(
+        "Cliente",
+        back_populates="ventas"
+    )
+
+    detalles = relationship(
+        "DetalleVenta",
+        back_populates="venta"
     )
